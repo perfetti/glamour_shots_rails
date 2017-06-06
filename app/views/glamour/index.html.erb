@@ -26,7 +26,7 @@
 
   <div id="content"></div>
   <div class="d-flex justify-content-center p-5 invisible">
-    <button class="disableOnSearch-js" onclick="$('#glamourForm input.submit').click()">Find More Glamour Shots</button>
+    <button class="disableOnSearch-js" onclick="resendForm()">Find More Glamour Shots</button>
   </div>
 </div>
 <script>
@@ -41,14 +41,21 @@
     }
     return vars;
   }
+  function resetPage() {
+    $('#pageIndex').val(0);
+    $('#content').html('');
+  }
+  function resendForm() {
+    $('#glamourForm input.submit').click()
+  }
 
   $('#glamourForm').on('ajax:before', function() {
     $('.disableOnSearch-js').attr('disabled', true)
-    var {firstName}    = getUrlVars();
-    var textBoxVal = $('#firstNameBox').val()
+    var {firstName} = getUrlVars();
+    var textBoxVal  = $('#firstNameBox').val();
+
     if(firstName.length > 0 && (textBoxVal !== firstName)){
-      $('#pageIndex').val(0);
-      $('#content').html('');
+      resetPage();
     }
   });
 
@@ -78,4 +85,11 @@
       $('#glamourForm input.submit').click();
     }
   })
+
+  window.onpopstate = function(event) {
+    var {firstName} = event.state;
+    $('#firstNameBox').val(firstName);
+    resetPage();
+    resendForm()
+  }
 </script>
