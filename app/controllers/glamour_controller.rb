@@ -23,9 +23,7 @@ class GlamourController < ApplicationController
     begin
       if stored_items = @redis.get(params)
         @items = JSON.parse(stored_items)
-        puts 'redis'
       else
-        puts 'fetching'
         response = RestClient.get(url, params: params)
         data = JSON.parse(response)
         @items = data['items']
