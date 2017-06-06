@@ -61,7 +61,7 @@
   $('#content').on('click', 'img', function(evt) {
     var firstName = $('#firstNameBox').val();
     FB.ui({
-      method: 'share',
+      method: 'feed',
       href: location.href,
       title: `Glamour shots for ${firstName}.`,
       picture: this.src,
