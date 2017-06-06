@@ -1,0 +1,33 @@
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-4">
+  <h1 class="centered">Find your Glamour photos</h1>
+</nav>
+<div class="container">
+  <form>
+    <label class="pr-3" for="firstName">Enter your Name</label>
+    <input type="text" name="firstName" id="firstNameBox" />
+    <input type="submit" value="submit" />
+  </form>
+  <div id="content"></div>
+  <div class="d-flex justify-content-center p-5 invisible">
+    <button onclick="searchFromBox();">Find More Glamour Shots</button>
+  </div>
+</div>
+<script type="text/javascript">
+  function hndlr(response) {
+    if(response.items !== undefined) {
+      for (var i = 0; i < response.items.length; i++) {
+        var item = response.items[i];
+        image = document.createElement('img');
+        image.src = item.link;
+        div = document.createElement('div');
+        div.className = 'col-12 col-sm-3 p-3';
+        div.appendChild(image);
+        document.getElementById("content").appendChild(div);
+      }
+      $('.invisible').removeClass('invisible');
+    } else {
+      document.getElementById("content").innerHTML = "<h2>Sorry No Images Were Found</h2>";
+    }
+  }
+  setBox();
+</script>

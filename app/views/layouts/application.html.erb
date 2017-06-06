@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Glamour Photos</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <script>
+      window.buildScript = function(url, id){
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = url;
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', id));
+        console.log(url)
+      }
+
+      var searchEngineId = '011867728287033795387:pl7k6xyfyxk';
+      window.pageIndex = 0;
+      window.imageSearch = function(query) {
+        var sanitizedQuery = encodeURI(query)
+        var queryString = `https://www.googleapis.com/customsearch/v1?key=AIzaSyBxtW8zQvuO7ozICe4M7_S_cbOjd-orjVs&cx=${searchEngineId}&searchType=image&q=${sanitizedQuery}&filter=1`
+        if (pageIndex > 0 ){
+          queryString += `&start=${pageIndex*11}`;
+        }
+        queryString += "&callback=hndlr";
+
+        buildScript(queryString, window.pageIndex);
+        window.pageIndex += 1;
+      }
+
+      window.setBox = function () {
+        var search = location.search.substring(1);
+        if(search.length > 0){
+          var queryObject = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+
+          if(queryObject.firstName.length > 0) {
+            imageSearch(`${queryObject.firstName.replace(/\+/, ' ')} glamour shot`);
+            document.getElementById('firstNameBox').value = queryObject.firstName.replace(/\+/, ' ');
+          }
+        }
+      }
+
+      window.searchFromBox = function() {
+        imageSearch(document.getElementById('firstNameBox').value);
+      }
+
+    </script>
+
+    <script src="//www.google.com/jsapi"></script>
+
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
