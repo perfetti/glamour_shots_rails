@@ -11,6 +11,10 @@
   #content div img {
     width: 100%;
   }
+  #content div img:hover {
+    border: 1px black solid;
+    cursor: pointer;
+  }
 </style>
 
 
@@ -23,6 +27,9 @@
     <%= text_field_tag 'firstName', params[:firstName], id: 'firstNameBox', required: true %>
     <input type="hidden" id="pageIndex" name="page" value="0" />
     <input type="submit" value="submit" class="submit disableOnSearch-js" />
+    <p class="text-center">
+      Click on any image to share it!
+    </p>
   </form>
 
   <div id="content"></div>
