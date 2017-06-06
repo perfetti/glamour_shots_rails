@@ -15,6 +15,7 @@ gem 'rest-client'
 
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
+gem 'redis-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
