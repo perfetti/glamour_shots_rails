@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: 'glamour#index'
+  get '/check_name' => 'glamour#check_name', as: :check_name
 end

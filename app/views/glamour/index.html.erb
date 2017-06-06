@@ -1,0 +1,63 @@
+<style>
+  nav h1 {
+    display: block;
+    margin: 0 auto;
+  }
+  #content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  #content div img {
+    width: 100%;
+  }
+</style>
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-4">
+  <h1 class="centered">Find your Glamour photos</h1>
+</nav>
+<div class="container">
+  <form action="<%= check_name_path %>" method="get" id="glamourForm" format="js" data-remote="true" >
+    <label class="pr-3" for="firstName">Enter your Name</label>
+    <%= text_field_tag 'firstName', params[:firstName], id: 'firstNameBox', required: true %>
+    <input type="hidden" id="pageIndex" name="page" value="0" />
+    <input type="submit" value="submit" class="submit disableOnSearch-js" />
+  </form>
+
+  <div id="content"></div>
+  <div class="d-flex justify-content-center p-5 invisible">
+    <button class="disableOnSearch-js" onclick="$('#glamourForm input.submit').click()">Find More Glamour Shots</button>
+  </div>
+</div>
+<script>
+  $('#glamourForm').on('ajax:before', function() {
+    $('.disableOnSearch-js').attr('disabled', true)
+  });
+
+  $('#glamourForm').on('ajax:send', function() {
+    var paramObj = {};
+    $.each($(this).serializeArray(), function(_, kv) {
+      paramObj[kv.name] = kv.value;
+    });
+
+
+    history.pushState(
+      paramObj,
+      `Glamour Shots for ${paramObj['firstName']}`,
+      `/?firstName=${paramObj['firstName']}`
+    );
+
+    newIndex = parseInt($('#pageIndex').val()) + 1
+    $('#pageIndex').val(newIndex);
+  })
+
+  $('#glamourForm').on('ajax:success', function() {
+    $('.disableOnSearch-js').removeAttr('disabled')
+  })
+
+  $(function() {
+    if($('#firstNameBox').val() !== ''){
+      $('#glamourForm input.submit').click();
+    }
+  })
+</script>
