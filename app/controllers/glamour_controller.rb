@@ -1,6 +1,8 @@
 require 'rest-client'
 
 class GlamourController < ApplicationController
+  before_action :set_redis, only: :check_name
+
   def index
   end
 
@@ -17,10 +19,18 @@ class GlamourController < ApplicationController
       filter: 1
     }
     params.merge!({start: page*11}) if(page > 0)
+
     begin
-      response = RestClient.get(url, params: params)
-      data = JSON.parse(response)
-      @items = data['items']
+      if stored_items = @redis.get(params)
+        @items = JSON.parse(stored_items)
+        puts 'redis'
+      else
+        puts 'fetching'
+        response = RestClient.get(url, params: params)
+        data = JSON.parse(response)
+        @items = data['items']
+        @redis.set(params, @items.to_json)
+      end
 
       if(@items && @items.length > 0)
         render template: 'glamour/check_name.js.erb', format: :js
@@ -35,5 +45,9 @@ class GlamourController < ApplicationController
   private
   def name_params
     params.require(:firstName)
+  end
+
+  def set_redis
+    @redis = Redis.new(:url => ENV['REDIS_URL'])
   end
 end
