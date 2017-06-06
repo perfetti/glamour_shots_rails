@@ -13,6 +13,7 @@
   }
 </style>
 
+
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-4">
   <h1 class="centered">Find your Glamour photos</h1>
 </nav>
@@ -29,6 +30,7 @@
     <button class="disableOnSearch-js" onclick="resendForm()">Find More Glamour Shots</button>
   </div>
 </div>
+
 <script>
   function getUrlVars(){
     var vars = [], hash;
@@ -48,6 +50,17 @@
   function resendForm() {
     $('#glamourForm input.submit').click()
   }
+
+  $('#content').on('click', 'img', function(evt) {
+    var firstName = $('#firstNameBox').val();
+    FB.ui({
+      method: 'share',
+      href: location.href,
+      title: `Glamour shots for ${firstName}.`,
+      picture: this.src,
+      caption: 'I found my glamour shots, you can too.',
+    }, function(response){});
+  });
 
   $('#glamourForm').on('ajax:before', function() {
     $('.disableOnSearch-js').attr('disabled', true)
