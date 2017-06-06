@@ -62,10 +62,10 @@
     var firstName = $('#firstNameBox').val();
     FB.ui({
       method: 'feed',
-      href: location.href,
-      title: `Glamour shots for ${firstName}.`,
+      link: location.href,
+      name: `Glamour shots for ${firstName}.`,
       picture: this.src,
-      caption: 'I found my glamour shots, you can too.',
+      description: 'I found my glamour shots, you can too.',
     }, function(response){});
   });
 
