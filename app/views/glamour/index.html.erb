@@ -11,28 +11,27 @@
   #content div img {
     width: 100%;
   }
-  #content div img:hover {
-    border: 1px black solid;
-    cursor: pointer;
+  #firstNameBox {
+    border: 1px #444 solid;
+    padding: 0.2em;
   }
 </style>
 
 
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded mb-4">
-  <h1 class="centered">Find your Glamour photos</h1>
+  <h1 class="centered">Glamour photos</h1>
 </nav>
 <div class="container">
 
   <form action="<%= check_name_path %>" method="get" id="glamourForm" format="js" data-remote="true" class="text-center" >
-    <label class="pr-3" for="firstName">Enter your Name</label>
+    <label class="pr-3" for="firstName">Enter your Name:</label>
     <%= text_field_tag 'firstName', params[:firstName], id: 'firstNameBox', required: true %>
     <input type="hidden" id="pageIndex" name="page" value="0" />
-    <input type="submit" value="submit" class="submit disableOnSearch-js" />
+    <input type="submit" value="Submit" class="btn m-3 submit disableOnSearch-js" />
   </form>
-  <p class="text-center invisible">
-    Click on any image to share it!
-  </p>
+
   <div id="content"></div>
+
   <div class="d-flex justify-content-center p-5 invisible">
     <button class="disableOnSearch-js" onclick="resendForm()">Find More Glamour Shots</button>
   </div>
@@ -58,7 +57,7 @@
     $('#glamourForm input.submit').click()
   }
 
-  $('#content').on('click', 'img', function(evt) {
+  $('#content').on('click', '.fb_share_button-js', function(evt) {
     var firstName = $('#firstNameBox').val();
     FB.ui({
       method: 'share_open_graph',
@@ -68,7 +67,7 @@
            'og:url': location.href,
            'og:title': `Glamour shot of ${firstName}`,
            'og:description': 'I found my glamour shots, you can too.',
-           'og:image': this.src
+           'og:image': $(this).data('src')
           }
       })
     }, function(response){});
