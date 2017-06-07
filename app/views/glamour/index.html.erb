@@ -81,8 +81,9 @@
     $('.loader').removeClass('hide');
     $('.disableOnSearch-js').attr('disabled', true)
     var {firstName} = getUrlVars();
-    var textBoxVal  = $('#firstNameBox').val();
+    firstName = decodeURIComponent(firstName)
 
+    var textBoxVal  = $('#firstNameBox').val();
     if(firstName.length > 0 && (textBoxVal !== firstName)){
       resetPage();
     }
