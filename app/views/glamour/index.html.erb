@@ -1,4 +1,7 @@
 <style>
+  body {
+    background-color: #eee;
+  }
   nav h1 {
     display: block;
     margin: 0 auto;
@@ -31,6 +34,7 @@
   </form>
 
   <div id="content"></div>
+  <div class="loader hide">Loading...</div>
 
   <div class="d-flex justify-content-center p-5 invisible">
     <button class="disableOnSearch-js" onclick="resendForm()">Find More Glamour Shots</button>
@@ -74,6 +78,7 @@
   });
 
   $('#glamourForm').on('ajax:before', function() {
+    $('.loader').removeClass('hide');
     $('.disableOnSearch-js').attr('disabled', true)
     var {firstName} = getUrlVars();
     var textBoxVal  = $('#firstNameBox').val();
@@ -102,6 +107,7 @@
 
   $('#glamourForm').on('ajax:success', function() {
     $('.disableOnSearch-js').removeAttr('disabled')
+    $('.loader').addClass('hide');
   })
 
   $(function() {
